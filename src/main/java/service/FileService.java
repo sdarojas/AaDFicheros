@@ -53,36 +53,34 @@ public class FileService {
 
 
     public void modificarEnteros(){
-        String path = "/home/sergio/Descargas/enteros.dat";
+        String path = "C:\\Users\\Sergio\\Downloads\\enteros.dat";
         RandomAccessFile fileLectura = fileDAO.leerFicheros(path);
-        try {
-            fileLectura.seek(0);
-            for (int i = 0; i < fileLectura.length()-1; i++) {
-                fileLectura.readInt();
-            }
+        leerFichero(fileLectura);
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         System.out.println("Introduce un número");
         int entero = pideInt();
 
         try {
-            fileLectura.seek(fileLectura.length()-1);
+            fileLectura.seek(fileLectura.length());
             fileLectura.writeInt(entero);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        leerFichero(fileLectura);
+
+    }
+    public void leerFichero(RandomAccessFile fileLectura) {
+        int num;
         try {
             fileLectura.seek(0);
-            for (int i = 0; i < fileLectura.length()-1; i++) {
-                fileLectura.readInt();
+            for (int i = 0; i < fileLectura.length(); i++) {
+                num = fileLectura.readInt();
+                System.out.println(num);
             }
+
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         }
-
-
     }
 
 
