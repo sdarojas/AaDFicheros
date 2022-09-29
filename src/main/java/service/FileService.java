@@ -6,6 +6,8 @@ import entity.Fichero;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.Scanner;
 
 public class FileService {
@@ -30,15 +32,57 @@ public class FileService {
         File fichero = fileDAO.crearFichero(path);
         System.out.println("Introduzca el contenido del fichero");
         String contenido = crearString();
-        FileWriter writer = new FileWriter(fichero);
-
 
 
     }
     public String crearString(){
-        Scanner sc = new Scanner(System.in);
-        String texto = sc.nextLine();
+        String texto;
+        try(Scanner sc = new Scanner(System.in)) {
+            texto = sc.nextLine();
+        }
         return texto;
+    }
+
+    public int pideInt(){
+        int entero;
+        try (Scanner sc = new Scanner(System.in)) {
+            entero = sc.nextInt();
+        }
+        return entero;
+    }
+
+
+    public void modificarEnteros(){
+        String path = "/home/sergio/Descargas/enteros.dat";
+        RandomAccessFile fileLectura = fileDAO.leerFicheros(path);
+        try {
+            fileLectura.seek(0);
+            for (int i = 0; i < fileLectura.length()-1; i++) {
+                fileLectura.readInt();
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("Introduce un número");
+        int entero = pideInt();
+
+        try {
+            fileLectura.seek(fileLectura.length()-1);
+            fileLectura.writeInt(entero);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            fileLectura.seek(0);
+            for (int i = 0; i < fileLectura.length()-1; i++) {
+                fileLectura.readInt();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
 
