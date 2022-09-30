@@ -53,7 +53,7 @@ public class FileService {
 
 
     public void modificarEnteros(){
-        String path = "C:\\Users\\Sergio\\Downloads\\enteros.dat";
+        String path = "/home/sergio/Descargas/enteros.dat";
         RandomAccessFile fileLectura = fileDAO.leerFicheros(path);
         leerFichero(fileLectura);
 
@@ -73,7 +73,7 @@ public class FileService {
         int num;
         try {
             fileLectura.seek(0);
-            for (int i = 0; i < fileLectura.length(); i++) {
+            for (int i = 0; fileLectura.length()!=fileLectura.getFilePointer(); i++) {
                 num = fileLectura.readInt();
                 System.out.println(num);
             }
@@ -84,4 +84,22 @@ public class FileService {
     }
 
 
+    public void modificarPorPosicion() {
+        String path = "/home/sergio/Descargas/enteros.dat";
+        try {
+            fileDAO.showIntegerFromFile(path);
+            System.out.println("Introdzca la posición que se quiere modificar");
+            int pos = pideInt();
+            pos--;
+            System.out.println("Introduce el valor a añadir");
+            int value;
+            try (Scanner sc = new Scanner(System.in)) {
+                value = sc.nextInt();
+            }
+
+            fileDAO.modIntegerFromFile(path,pos,value);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

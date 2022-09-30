@@ -35,6 +35,33 @@ public class FileDAOimpl implements FileDAO{
         }
     }
 
+    @Override
+    public void showIntegerFromFile(String path) throws IOException {
+        RandomAccessFile randomAccessFile = new RandomAccessFile(path,"r");
+        randomAccessFile.seek(0);
+        int position = 1;
+        for (int i = 0;randomAccessFile.length() != randomAccessFile.getFilePointer();i++){
+            int num = randomAccessFile.readInt();
+            System.out.println(position +".- "+num);
+            position++;
+        }
+        System.out.println("Fin del archivo");
+    }
+
+    @Override
+    public void modIntegerFromFile(String path, int pos, int value) throws IOException {
+        RandomAccessFile randomAccessFile = new RandomAccessFile(path,"rw");
+        randomAccessFile.seek(pos*4);
+        randomAccessFile.writeInt(value);
+        randomAccessFile.seek(0);
+        int position = 1;
+        for (int i = 0;randomAccessFile.length() != randomAccessFile.getFilePointer();i++){
+            int num = randomAccessFile.readInt();
+            System.out.println(position +".- "+num);
+            position++;
+        }
+        System.out.println("Fin del programa");
+    }
 
 
 }
